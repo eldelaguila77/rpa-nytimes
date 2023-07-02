@@ -1,0 +1,11 @@
+[
+    {
+        "payload": {
+            "search_term": "Guatemala",
+            "categories": ["Books", "Climate", "Article"],
+            "months": "4"
+        },
+        "files": {
+        }
+    }
+]
