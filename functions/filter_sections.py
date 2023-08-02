@@ -88,7 +88,6 @@ class FilterSections:
         new_uri_section = self.concat_categories_url(encoded_values_section)
         new_uri = self.browser.get_location()
         if new_uri_section != "":
-            logger.info("sections filters were selected")
             new_uri = new_uri + "&sections=" + new_uri_section
 
         checkboxes_values_type = self.get_checkboxes_value(type_button)
@@ -96,7 +95,6 @@ class FilterSections:
         new_uri_type = self.concat_categories_url(encoded_values_type)
 
         if new_uri_type != "":
-            logger.info("types filters were selected")
             new_uri = new_uri + "&types=" + new_uri_type
 
 
