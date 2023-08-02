@@ -64,7 +64,7 @@ class NyTimes:
             logger.warning("close updated terms was not found")
 
     
-    def click_cookies(self, browser: Selenium) -> None:
+    def click_cookies(self) -> None:
         """
         This function accepts cookies on a webpage using RPA Selenium.
 
@@ -75,9 +75,9 @@ class NyTimes:
         """
         accept_button_xpath = "//button[@data-testid='GDPR-accept']"
         try:
-            browser.wait_until_page_contains_element(accept_button_xpath)
-            browser.click_element(accept_button_xpath)
-            browser.reload_page()
+            self.browser.wait_until_page_contains_element(accept_button_xpath)
+            self.browser.click_element(accept_button_xpath)
+            self.browser.reload_page()
         except Exception as e:
             logger.error("Can't find or interact with cookies button: %s", str(e))
 
