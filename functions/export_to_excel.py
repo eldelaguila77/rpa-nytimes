@@ -3,11 +3,12 @@ from datetime import datetime
 
 from openpyxl import Workbook
 
-from functions.utils import path_to_save_files
+from functions.utils import Utils
+from functions.logger import logger
 
 # The `WorkbookExcel` class is a Python class that creates an Excel workbook, populates it with data
 # from a dataframe, and saves it as a file with a specific name.
-class WorkbookExcel:
+class WorkbookExcel(Utils):
     
     def __init__(
         self,
@@ -52,7 +53,7 @@ class WorkbookExcel:
 
         dt_utcnow = datetime.utcnow()
         download_file_name= f"searching_{self.search_term}_results_{dt_utcnow}.xlsx"
-        export_path = path_to_save_files()
+        export_path = self.path_to_save_files()
         save_path = os.path.join(export_path, download_file_name)
         self.workbook.save(save_path)
 
@@ -64,16 +65,4 @@ class WorkbookExcel:
         self.columns_name()
         self.set_content()
         self.save_file()
-
-def export_to_excel(dataframe: list, search_term: str) -> None:
-    """
-    The function `export_to_excel` exports a given dataframe to an Excel file.
-    
-    :param dataframe: The `dataframe` parameter is a list that contains the data that you want to export
-    to an Excel file. Each element in the list represents a row in the Excel file
-    :type dataframe: list
-    :param search_term: The search_term parameter is a string that represents the filename you want to
-    save the file
-    """
-    workbook_excel = WorkbookExcel(dataframe, search_term)
-    workbook_excel.load_constructor()
+        logger.info("xls created")

@@ -41,6 +41,17 @@ def open_site(months: int, search: str)  -> Selenium :
     browser.maximize_browser_window()
     return browser
 
+def close_updated_terms(browser: Selenium) -> None :
+
+    #Finals
+    terms_button = '//div[@class="css-hqisq1"]//button'
+
+    #Process
+
+    if browser.find_element(terms_button) :
+        browser.click_element(terms_button)
+
+
 
 
 

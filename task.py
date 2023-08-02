@@ -1,11 +1,10 @@
 """Template robot with Python."""
-from functions.open_site import open_site
-from functions.utils import get_global_variables
-from functions.filter_sections import filters
-from functions.show_more import show_more
-from functions.collecting_data import get_list_result
-from functions.export_to_excel import export_to_excel
-from functions.save_picture_file import export_to_zip
+from functions.nytimes import NyTimes
+from functions.utils import Utils
+from functions.filter_sections import FilterSections
+from functions.collecting_data import CollectingData
+from functions.export_to_excel import WorkbookExcel
+from functions.save_picture_file import SavePictureFile
 
 def minimal_task():
     # The code snippet is performing a series of tasks:
@@ -21,22 +20,25 @@ def minimal_task():
 # The code snippet `filters(browser, categories)` is calling a function named `filters` and passing
 # two arguments: `browser` and `categories`. This function is likely responsible for applying filters
 # to the website or web page being accessed by the `browser` object.
-    months = get_global_variables("months")
-    search_term = get_global_variables("search_term")
-    categories = get_global_variables("categories")
+    utils = Utils()
+    months = utils.get_global_variables("months")
+    search_term = utils.get_global_variables("search_term")
+    categories = utils.get_global_variables("categories")
     if months == "" :
         months = 0
-    browser = open_site(months, search_term)
+    nytimes = NyTimes(months, search_term, categories)
+    nytimes.open_browser()
+    browser = nytimes.open_site()
+    filters = FilterSections(browser, categories)
     if len(categories) > 0:
-        filters(browser, categories)
-    show_more(browser)
-    news_list_result = get_list_result(browser, search_term)
-    export_to_excel(news_list_result, search_term)
-    """
-    The function `export_to_zip` creates a zip file containing all the files in an images directory.
-    """
-    export_to_zip()
-
+        filters.filters()
+    nytimes.show_more()
+    collecting_data = CollectingData(browser, search_term)
+    news_list_result = collecting_data.get_list_result()
+    export_to_excel = WorkbookExcel(news_list_result, search_term)
+    export_to_excel.load_constructor()
+    export_to_zip = SavePictureFile()
+    export_to_zip.export_to_zip()
 
 if __name__ == "__main__":
     minimal_task()
