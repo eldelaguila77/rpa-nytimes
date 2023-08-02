@@ -1,7 +1,7 @@
 from RPA.Browser.Selenium import Selenium
 from datetime import datetime, timedelta
 from SeleniumLibrary.errors import ElementNotFound
-from selenium.common.exceptions import StaleElementReferenceException
+from selenium.common.exceptions import StaleElementReferenceException, ElementClickInterceptedException
 from functions.logger import logger
 
 class NyTimes:
@@ -82,13 +82,17 @@ class NyTimes:
                     self.browser.set_focus_to_element(btn_show_more)
                     self.browser.click_button(btn_show_more)
                 except AssertionError:
-                    print("Error")
+                    logger.error("Error")
                     condition = False
                 except ElementNotFound:
-                    print("btn already not found")
+                    logger.warning("btn already not found")
                 except StaleElementReferenceException:
-                    print("stale element reference")
+                    logger.error("stale element reference")
                     self.browser.go_to(current_url)
+                except ElementClickInterceptedException:
+                    logger.error("Other element would receive the click")
+                    self.browser.wait_until_element_is_visible(btn_show_more, 2)
+                    continue
             else:
                 self.browser.go_to(current_url)
         
