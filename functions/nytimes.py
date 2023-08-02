@@ -78,6 +78,7 @@ class NyTimes:
             self.browser.wait_until_page_contains_element(accept_button_xpath)
             self.browser.click_element(accept_button_xpath)
             self.browser.reload_page()
+            logger.info("click_cookies was clicked")
         except Exception as e:
             logger.error("Can't find or interact with cookies button: %s", str(e))
 
