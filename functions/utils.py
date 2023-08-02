@@ -1,6 +1,8 @@
 import os
 from RPA.Robocorp.WorkItems import WorkItems
 import re
+from RPA.Browser.Selenium import Selenium
+from datetime import datetime
 
 class Utils:
 
@@ -74,3 +76,10 @@ class Utils:
         output_path = os.path.join(base_directory, dir_save)
 
         return output_path 
+    
+    def screenshot(self, browser: Selenium) -> None:
+        path = self.path_to_save_files()
+        time = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
+        file_name = f"image_{time}"
+        image = os.path.join(path, file_name)
+        browser.screenshot(image)

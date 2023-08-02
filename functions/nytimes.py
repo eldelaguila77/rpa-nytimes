@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from SeleniumLibrary.errors import ElementNotFound
 from selenium.common.exceptions import StaleElementReferenceException, ElementClickInterceptedException
 from functions.logger import logger
+from functions.utils import Utils
+import sys
 
 class NyTimes:
 
@@ -16,6 +18,7 @@ class NyTimes:
         self.months = months
         self.search_term = search_term
         self.categories: categories
+        self.utils = Utils()
 
     def open_browser(self) -> None:
         browser = Selenium()
@@ -90,9 +93,10 @@ class NyTimes:
                     logger.error("stale element reference")
                     self.browser.go_to(current_url)
                 except ElementClickInterceptedException:
+                    self.utils.screenshot(self.browser)
                     logger.error("Other element would receive the click")
                     self.browser.wait_until_element_is_visible(btn_show_more, 2)
-                    continue
+                    sys.exit(0)
             else:
                 self.browser.go_to(current_url)
         
