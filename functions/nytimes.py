@@ -114,6 +114,7 @@ class NyTimes:
                     self.utils.screenshot(self.browser)
                     logger.error("Other element would receive the click")
                     self.browser.wait_until_element_is_visible(btn_show_more, 2)
+                    self.click_cookies()
                     continue
             else:
                 self.browser.go_to(current_url)
