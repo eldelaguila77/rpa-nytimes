@@ -4,7 +4,6 @@ from SeleniumLibrary.errors import ElementNotFound
 from selenium.common.exceptions import StaleElementReferenceException, ElementClickInterceptedException
 from functions.logger import logger
 from functions.utils import Utils
-import sys
 
 class NyTimes:
 
@@ -64,6 +63,24 @@ class NyTimes:
         except:
             logger.warning("close updated terms was not found")
 
+    
+    def click_cookies(self, browser: Selenium) -> None:
+        """
+        This function accepts cookies on a webpage using RPA Selenium.
+
+        :param browser: An instance of the RPA Browser Selenium class, which is used to automate web browsers
+        for testing and web scraping purposes. It allows the script to interact with the web page and perform
+        actions such as clicking buttons, filling out forms, and navigating through pages.
+        :type browser: RPA.Browser.Selenium.Selenium
+        """
+        accept_button_xpath = "//button[@data-testid='GDPR-accept']"
+        try:
+            browser.wait_until_page_contains_element(accept_button_xpath)
+            browser.click_element(accept_button_xpath)
+            browser.reload_page()
+        except Exception as e:
+            logger.error("Can't find or interact with cookies button: %s", str(e))
+
     def show_more(self) -> None:
         """
         The function `show_more` uses a while loop to continuously click a "show more" button on a web page
@@ -96,7 +113,7 @@ class NyTimes:
                     self.utils.screenshot(self.browser)
                     logger.error("Other element would receive the click")
                     self.browser.wait_until_element_is_visible(btn_show_more, 2)
-                    sys.exit(0)
+                    continue
             else:
                 self.browser.go_to(current_url)
         
@@ -114,6 +131,7 @@ class NyTimes:
         url = f"https://www.nytimes.com/search?dropmab=false&endDate={self.end_date_str}&query={self.search_term}&sort=best&startDate={self.start_date_str}"
         self.browser.go_to(url)
         self.close_updated_terms()
+        self.click_cookies()
         logger.info("site opened successfully")
         return self.browser
     
