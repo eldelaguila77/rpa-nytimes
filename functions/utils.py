@@ -80,6 +80,6 @@ class Utils:
     def screenshot(self, browser: Selenium) -> None:
         path = self.path_to_save_files()
         time = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
-        file_name = f"image_{time}"
+        file_name = f"image_{time}.png"
         image = os.path.join(path, file_name)
-        browser.screenshot(image)
+        browser.capture_page_screenshot(image)
